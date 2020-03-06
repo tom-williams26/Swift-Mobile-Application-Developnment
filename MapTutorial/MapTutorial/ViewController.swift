@@ -14,10 +14,16 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     
+    @IBAction func getButtonTapped(_ sender: UIButton) {
+        getDirections()
+    }
     @IBOutlet weak var addressLabelOutlet: UILabel!
+    
     let locationManager = CLLocationManager()
     let regionMeters: Double = 0.5
     var previousLocation: CLLocation?
+    var directionsArray: [MKDirections] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -93,6 +99,45 @@ class ViewController: UIViewController {
         previousLocation = getCenterLocation(for: mapView)
     }
 
+    func getDirections() {
+        guard let location = locationManager.location?.coordinate else {
+            //TODO : Show the user an error
+            return
+        }
+        
+        let request = createDirectionsRequest(from: location)
+        let directions = MKDirections(request: request)
+        resetMapView(withNew: directions)
+        
+        directions.calculate { [unowned self] (response, error ) in
+            guard let response = response else { return }
+            
+            for route in response.routes {
+                // Extra task, display all the steps in a table view
+                // let steps = route.steps
+                self.mapView.addOverlay(route.polyline)
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true )
+            }
+        }
+    }
+    
+    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
+        let destinationCoordinate       = getCenterLocation(for: mapView).coordinate
+        let startingLocation            = MKPlacemark(coordinate: coordinate)
+        let destination                 = MKPlacemark(coordinate: destinationCoordinate)
+        
+        let request                     = MKDirections.Request()
+        request.source                  = MKMapItem(placemark: startingLocation)
+        request.destination             = MKMapItem(placemark:  destination)
+        request.requestsAlternateRoutes = false
+        return request
+    }
+    
+    func resetMapView(withNew directions: MKDirections) {
+        mapView.removeOverlays(mapView.overlays)
+        directionsArray.append(directions)
+        let _ = directionsArray.map {$0.cancel}
+    }
 }
 
 // Class extensions are ways of moving specific code outside of the main class to keep it tidy. This is mainly used for writing delegate handlers.
@@ -152,5 +197,11 @@ extension ViewController: MKMapViewDelegate {
             
         }
         
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
+        renderer.strokeColor = .blue
+        return renderer
     }
 }
