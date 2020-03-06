@@ -13,8 +13,8 @@ import CoreLocation
 class ViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var addresLabelOutlet: UILabel!
     
+    @IBOutlet weak var addressLabelOutlet: UILabel!
     let locationManager = CLLocationManager()
     let regionMeters: Double = 0.5
     var previousLocation: CLLocation?
@@ -97,15 +97,15 @@ class ViewController: UIViewController {
 
 // Class extensions are ways of moving specific code outside of the main class to keep it tidy. This is mainly used for writing delegate handlers.
 extension ViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager:CLLocationManager, didUpdateLocations locations: [CLLocation]){
-        print("Did update location")
-        guard let location = locations.last else { return }
-        let center = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
-        let span = MKCoordinateSpan.init(latitudeDelta: regionMeters, longitudeDelta: regionMeters)
-        let region = MKCoordinateRegion.init(center: center, span: span)
-        mapView.setRegion(region, animated: true)
-        
-    }
+//    func locationManager(_ manager:CLLocationManager, didUpdateLocations locations: [CLLocation]){
+//        print("Did update location")
+//        guard let location = locations.last else { return }
+//        let center = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
+//        let span = MKCoordinateSpan.init(latitudeDelta: regionMeters, longitudeDelta: regionMeters)
+//        let region = MKCoordinateRegion.init(center: center, span: span)
+//        mapView.setRegion(region, animated: true)
+//
+//    }
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status:
         CLAuthorizationStatus) {
         print("Did local Auth")
@@ -132,6 +132,23 @@ extension ViewController: MKMapViewDelegate {
         
         geoCoder.reverseGeocodeLocation(center) {
             [weak self] (placemarks, error) in
+            
+            if let _ = error {
+                //TODO: Show alert informing user.
+                return
+            }
+            
+            guard let placemark = placemarks?.first else {
+                //TODO: Show alert for error.
+                return
+            }
+            
+            let streetNumber = placemark.subThoroughfare ?? ""
+            let streetName = placemark.thoroughfare ?? ""
+            // We are inside a completion handler (seperate thread) here, so to get back to the main thread do this: {
+            DispatchQueue.main.async {
+                self?.addressLabelOutlet.text = "\(streetNumber) \(streetName)"
+            }
             
         }
         
