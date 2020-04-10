@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class RegisterInterestViewController: UIViewController, UITextFieldDelegate {
+class RegisterInterestViewController: UIViewController {
 
     @IBOutlet weak var firstNameInputField: UITextField!
     @IBOutlet weak var lastNameInputField: UITextField!
@@ -25,21 +25,35 @@ class RegisterInterestViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        configureTextFields()
+        configureTapGesture()
         birthDatePicker()
+       
+    }
+    
+    private func configureTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(RegisterInterestViewController.viewTapped(gestureRecognizer:)))
-        
+               
         view.addGestureRecognizer(tapGesture)
+    }
+    private func configureTextFields() {
+        firstNameInputField.delegate = self
+        lastNameInputField.delegate = self
+        emailAddressTextField.delegate = self
+        birthDateTextField.delegate = self
     }
     
     func inputFullName() {
-        if firstNameInputField.text?.isBlank 
+        if (firstNameInputField.text!.nameIsValid(testStr: firstNameInputField.text!)) {
+            
+        }
     }
     
     func inputEmail() {
         let inputEmailAddress = UIAlertController(title: "Invalid input", message: "Please enter a valid email address", preferredStyle: .alert)
         inputEmailAddress.addAction(UIAlertAction(title: "Dismiss", style: .default))
         
-        if emailAddressTextField.text!.isBlank {
+        if emailAddressTextField.text!.isEmpty {
             self.present(inputEmailAddress, animated: true, completion: nil)
         }
         else if emailAddressTextField.text!.isEmail {
@@ -93,6 +107,13 @@ class RegisterInterestViewController: UIViewController, UITextFieldDelegate {
     
 }
 
+extension RegisterInterestViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
 
 extension String {
 

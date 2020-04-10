@@ -112,6 +112,7 @@
 				027E06B8243A46A7009182FE /* AppDelegate.swift */,
 				027E06BA243A46A7009182FE /* SceneDelegate.swift */,
 				027E072E243A9C5A009182FE /* HomeViewController.swift */,
+				0254241A243F92EA0051E30D /* RegisterInterestViewController.swift */,
 				029AD626243BCBDF004DB625 /* MainNavigationController.swift */,
 				029AD628243BD24A004DB625 /* LoginViewController.swift */,
 				02542418243F4B820051E30D /* TableViewController.swift */,
@@ -120,7 +121,6 @@
 				027E06C6243A46A7009182FE /* LaunchScreen.storyboard */,
 				027E06C9243A46A7009182FE /* Info.plist */,
 				027E06C1243A46A7009182FE /* CS4S764_15010570_RegisterInterestAppCW.xcdatamodeld */,
-				0254241A243F92EA0051E30D /* RegisterInterestViewController.swift */,
 			);
 			path = CS4S764_15010570_RegisterInterestAppCW;
 			sourceTree = "<group>";
