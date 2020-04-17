@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="18G4032" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Student" representedClassName="Student" syncable="YES">
-        <attribute name="dateOfBirth" optional="YES" attributeType="Date" minDateTimeInterval="136415760" usesScalarValueType="NO"/>
+        <attribute name="dateOfBirth" optional="YES" attributeType="String"/>
         <attribute name="emailAddress" optional="YES" attributeType="String"/>
-        <attribute name="fullName" optional="YES" attributeType="String"/>
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
         <attribute name="latitude" optional="YES" attributeType="String"/>
         <attribute name="longitude" optional="YES" attributeType="String"/>
-        <attribute name="marketingUpdates" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="subjectArea" optional="YES" attributeType="String"/>
+        <attribute name="marketingUpdates" optional="YES" attributeType="String"/>
+        <attribute name="subject" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Student" positionX="-54" positionY="-9" width="128" height="148"/>
+        <element name="Student" positionX="-54" positionY="-9" width="128" height="163"/>
     </elements>
 </model>
